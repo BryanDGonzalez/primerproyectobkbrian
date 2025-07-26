@@ -1,0 +1,56 @@
+[
+  {
+    "id": "1",
+    "title": "Dragon Ball Super",
+    "description": "La continuación de Dragon Ball Z, siguiendo las aventuras de Goku y sus amigos",
+    "code": "DBS001",
+    "price": 16.99,
+    "status": true,
+    "stock": 45,
+    "category": "Shonen",
+    "thumbnails": [
+      "https://example.com/dbs1.jpg",
+      "https://example.com/dbs2.jpg"
+    ]
+  },
+  {
+    "id": "2",
+    "title": "One Piece",
+    "description": "La épica aventura de Monkey D. Luffy en busca del One Piece",
+    "code": "OP001",
+    "price": 12.99,
+    "status": true,
+    "stock": 75,
+    "category": "Shonen",
+    "thumbnails": [
+      "https://example.com/op1.jpg"
+    ]
+  },
+  {
+    "id": "3",
+    "title": "Attack on Titan",
+    "description": "La humanidad lucha por sobrevivir contra los titanes",
+    "code": "AOT001",
+    "price": 18.99,
+    "status": true,
+    "stock": 30,
+    "category": "Seinen",
+    "thumbnails": [
+      "https://example.com/aot1.jpg",
+      "https://example.com/aot2.jpg"
+    ]
+  },
+  {
+    "id": "4",
+    "title": "Naruto Shippuden",
+    "description": "La historia de Naruto Uzumaki como ninja",
+    "code": "NAR001",
+    "price": 14.99,
+    "status": true,
+    "stock": 40,
+    "category": "Shonen",
+    "thumbnails": [
+      "https://example.com/naruto1.jpg"
+    ]
+  }
+]

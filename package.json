@@ -1,0 +1,23 @@
+{
+  "name": "primerproyecto-77525",
+  "version": "1.0.0",
+  "description": "API RESTful para Tienda de Mangas",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js"
+  },
+  "keywords": [
+    "express",
+    "api",
+    "mangas",
+    "carrito"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "axios": "^1.11.0"
+  }
+}
