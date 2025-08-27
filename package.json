@@ -1,21 +1,24 @@
 {
-  "name": "primerproyecto-77525",
+  "name": "tienda-mangas",
   "version": "1.0.0",
-  "description": "API RESTful para Tienda de Mangas",
+  "description": "Tienda de Mangas con WebSockets",
   "main": "src/app.js",
   "scripts": {
     "start": "node src/app.js"
   },
   "keywords": [
     "express",
-    "api",
-    "mangas",
-    "carrito"
+    "handlebars",
+    "socket.io",
+    "websockets",
+    "mangas"
   ],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "express-handlebars": "^8.0.1",
+    "socket.io": "^4.8.1"
   },
   "devDependencies": {
     "axios": "^1.11.0"

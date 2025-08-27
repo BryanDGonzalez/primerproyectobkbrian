@@ -1,0 +1,172 @@
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="mb-0">
+                <i class="fas fa-bolt text-warning me-2"></i>
+                Productos en Tiempo Real
+            </h1>
+            <a href="/" class="btn btn-secondary">
+                <i class="fas fa-home me-1"></i>
+                Volver al Inicio
+            </a>
+        </div>
+        <p class="lead text-muted">Gestiona productos en tiempo real usando WebSockets</p>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Formulario para crear productos -->
+    <div class="col-lg-4 mb-4">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h4 class="mb-0">
+                    <i class="fas fa-plus me-2"></i>
+                    Agregar Producto
+                </h4>
+            </div>
+            <div class="card-body">
+                <form id="createProductForm">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Título *</label>
+                        <input type="text" class="form-control" id="title" name="title" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Descripción *</label>
+                        <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="code" class="form-label">Código *</label>
+                        <input type="text" class="form-control" id="code" name="code" required>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label for="price" class="form-label">Precio *</label>
+                                <input type="number" class="form-control" id="price" name="price" step="0.01" min="0" required>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label for="stock" class="form-label">Stock *</label>
+                                <input type="number" class="form-control" id="stock" name="stock" min="0" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="category" class="form-label">Categoría *</label>
+                        <select class="form-select" id="category" name="category" required>
+                            <option value="">Seleccionar categoría</option>
+                            <option value="Shonen">Shonen</option>
+                            <option value="Seinen">Seinen</option>
+                            <option value="Shojo">Shojo</option>
+                            <option value="Josei">Josei</option>
+                            <option value="Kodomo">Kodomo</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="thumbnails" class="form-label">URLs de Imágenes</label>
+                        <textarea class="form-control" id="thumbnails" name="thumbnails" rows="2" placeholder="https://ejemplo.com/imagen1.jpg, https://ejemplo.com/imagen2.jpg"></textarea>
+                        <small class="form-text text-muted">Separar múltiples URLs con comas</small>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="status" name="status" checked>
+                            <label class="form-check-label" for="status">
+                                Producto disponible
+                            </label>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100">
+                        <i class="fas fa-plus me-1"></i>
+                        Crear Producto
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lista de productos en tiempo real -->
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">
+                    <i class="fas fa-list me-2"></i>
+                    Productos
+                </h4>
+                <span class="badge bg-light text-dark" id="productCount">{{products.length}} productos</span>
+            </div>
+            <div class="card-body">
+                <div id="productsList">
+                    {{#if products.length}}
+                        <div class="row">
+                            {{#each products}}
+                                <div class="col-md-6 mb-3 product-item" data-id="{{id}}">
+                                    <div class="card h-100">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                                <h6 class="card-title text-primary mb-0">{{title}}</h6>
+                                                <button class="btn btn-sm btn-danger delete-product" data-id="{{id}}" title="Eliminar producto">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                            <p class="card-text small text-muted">{{description}}</p>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <small class="text-muted">Código:</small>
+                                                    <p class="mb-1 small"><strong>{{code}}</strong></p>
+                                                </div>
+                                                <div class="col-6">
+                                                    <small class="text-muted">Categoría:</small>
+                                                    <p class="mb-1 small"><strong>{{category}}</strong></p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <small class="text-muted">Precio:</small>
+                                                    <p class="mb-1 small"><strong class="text-success">${{price}}</strong></p>
+                                                </div>
+                                                <div class="col-6">
+                                                    <small class="text-muted">Stock:</small>
+                                                    <p class="mb-1 small">
+                                                        <span class="badge {{#if (gt stock 10)}}bg-success{{else if (gt stock 5)}}bg-warning{{else}}bg-danger{{/if}}">
+                                                            {{stock}}
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="mt-2">
+                                                <small class="text-muted">Estado:</small>
+                                                <span class="badge {{#if status}}bg-success{{else}}bg-secondary{{/if}}">
+                                                    {{#if status}}Disponible{{else}}No disponible{{/if}}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {{/each}}
+                        </div>
+                    {{else}}
+                        <div class="text-center py-5">
+                            <i class="fas fa-box-open fa-3x text-muted mb-3"></i>
+                            <h5 class="text-muted">No hay productos disponibles</h5>
+                            <p class="text-muted">Agrega productos usando el formulario</p>
+                        </div>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Toast para notificaciones -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="notificationToast" class="toast" role="alert">
+        <div class="toast-header">
+            <i class="fas fa-info-circle me-2"></i>
+            <strong class="me-auto">Notificación</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+        </div>
+        <div class="toast-body" id="toastMessage">
+        </div>
+    </div>
+</div>

@@ -19,8 +19,21 @@ router.post('/', async (req, res) => {
   if (!title || !description || !code || price == null || status == null || stock == null || !category) {
     return res.status(400).json({ error: 'Faltan campos obligatorios' });
   }
-  const newProduct = await pm.add({ title, description, code, price, status, stock, category, thumbnails: thumbnails || [] });
-  res.status(201).json(newProduct);
+  
+  try {
+    const newProduct = await pm.add({ title, description, code, price, status, stock, category, thumbnails: thumbnails || [] });
+    
+    // Emitir evento WebSocket si el servidor io está disponible
+    const io = req.app.get('io');
+    if (io) {
+      io.emit('productCreated', newProduct);
+    }
+    
+    res.status(201).json(newProduct);
+  } catch (error) {
+    console.error('Error al crear producto:', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
 });
 
 router.put('/:pid', async (req, res) => {
@@ -30,9 +43,21 @@ router.put('/:pid', async (req, res) => {
 });
 
 router.delete('/:pid', async (req, res) => {
-  const deleted = await pm.delete(req.params.pid);
-  if (!deleted) return res.status(404).json({ error: 'Producto no encontrado' });
-  res.json({ message: 'Producto eliminado' });
+  try {
+    const deleted = await pm.delete(req.params.pid);
+    if (!deleted) return res.status(404).json({ error: 'Producto no encontrado' });
+    
+    // Emitir evento WebSocket si el servidor io está disponible
+    const io = req.app.get('io');
+    if (io) {
+      io.emit('productDeleted', req.params.pid);
+    }
+    
+    res.json({ message: 'Producto eliminado' });
+  } catch (error) {
+    console.error('Error al eliminar producto:', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
 });
 
 module.exports = router; 
